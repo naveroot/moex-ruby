@@ -47,7 +47,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add lib/moex-ruby/version.rb
+        git add lib/moex_ruby/version.rb
         git commit -m "Bump version to ${{ github.event.inputs.version }}" || exit 0
         git push
 
