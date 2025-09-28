@@ -1,17 +1,29 @@
 name: Ruby Gem
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 0.1.0)'
+        required: true
+        type: string
+      publish_to_rubygems:
+        description: 'Publish to RubyGems'
+        required: false
+        type: boolean
+        default: true
+      publish_to_github_packages:
+        description: 'Publish to GitHub Packages'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
     name: Build + Publish
     runs-on: ubuntu-22.04
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -24,6 +36,20 @@ jobs:
       with:
         ruby-version: 3.2.2
         bundler-cache: true
+
+    - name: Update gem version
+      run: |
+        sed -i "s/VERSION = '[^']*'/VERSION = '${{ github.event.inputs.version }}'/g" lib/moex/version.rb
+        echo "Updated version to ${{ github.event.inputs.version }}"
+        cat lib/moex/version.rb
+
+    - name: Commit version update
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add lib/moex/version.rb
+        git commit -m "Bump version to ${{ github.event.inputs.version }}" || exit 0
+        git push
 
     - name: Publish to GPR
       run: |
