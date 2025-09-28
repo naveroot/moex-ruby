@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/moex/version'
+require_relative 'lib/moex_ruby/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'moex'
-  spec.version       = Moex::VERSION
+  spec.name          = 'moex-ruby'
+  spec.version       = MoexRuby::VERSION
   spec.authors       = ['Pushkin Ivan']
   spec.email         = ['naveroot@naveroot.ru']
   spec.summary       = 'Ruby client for MOEX ISS (Information & Statistical Server) API'
