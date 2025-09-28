@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'moex'
   spec.version       = Moex::VERSION
   spec.authors       = ['Pushkin Ivan']
-  spec.email         = ['naveroot@gmail.com']
+  spec.email         = ['naveroot@naveroot.ru']
   spec.summary       = 'Ruby client for MOEX ISS (Information & Statistical Server) API'
   spec.description   = <<~DESC
     A comprehensive Ruby client for interacting with the Moscow Exchange ISS API.
