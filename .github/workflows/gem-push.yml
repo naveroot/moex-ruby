@@ -39,15 +39,15 @@ jobs:
 
     - name: Update gem version
       run: |
-        sed -i "s/VERSION = '[^']*'/VERSION = '${{ github.event.inputs.version }}'/g" lib/moex/version.rb
+        sed -i "s/VERSION = '[^']*'/VERSION = '${{ github.event.inputs.version }}'/g" lib/moex-ruby/version.rb
         echo "Updated version to ${{ github.event.inputs.version }}"
-        cat lib/moex/version.rb
+        cat lib/moex-ruby/version.rb
 
     - name: Commit version update
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add lib/moex/version.rb
+        git add lib/moex-ruby/version.rb
         git commit -m "Bump version to ${{ github.event.inputs.version }}" || exit 0
         git push
 
