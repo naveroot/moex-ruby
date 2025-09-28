@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'lib/moex/version'
+
 Gem::Specification.new do |spec|
   spec.name          = 'moex'
-  spec.version       = '0.0.1'
+  spec.version       = Moex::VERSION
   spec.authors       = ['Pushkin Ivan']
   spec.email         = ['naveroot@gmail.com']
   spec.summary       = 'Ruby client for MOEX ISS (Information & Statistical Server) API'
@@ -17,5 +19,5 @@ Gem::Specification.new do |spec|
   spec.metadata['source_code_uri'] = 'https://github.com/naveroot/moex'
   spec.metadata['changelog_uri'] = 'https://github.com/naveroot/moex/blob/main/CHANGELOG.md'
   spec.metadata['rubygems_mfa_required'] = 'true'
-  spec.files = Dir["CHANGELOG.md", "LICENSE", "README.md", "dry-container.gemspec", "lib/**/*"]
+  spec.files = Dir["CHANGELOG.md", "LICENSE", "README.md", "moex.gemspec", "lib/**/*"]
 end
