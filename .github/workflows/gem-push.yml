@@ -52,6 +52,7 @@ jobs:
         git push
 
     - name: Publish to GPR
+      if: ${{ github.event.inputs.publish_to_github_packages == 'true' }}
       run: |
         mkdir -p $HOME/.gem
         touch $HOME/.gem/credentials
@@ -64,6 +65,7 @@ jobs:
         OWNER: ${{ github.repository_owner }}
 
     - name: Publish to RubyGems
+      if: ${{ github.event.inputs.publish_to_rubygems == 'true' }}
       run: |
         mkdir -p $HOME/.gem
         touch $HOME/.gem/credentials
