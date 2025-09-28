@@ -39,9 +39,9 @@ jobs:
 
     - name: Update gem version
       run: |
-        sed -i "s/VERSION = '[^']*'/VERSION = '${{ github.event.inputs.version }}'/g" lib/moex-ruby/version.rb
+        sed -i "s/VERSION = '[^']*'/VERSION = '${{ github.event.inputs.version }}'/g" lib/moex_ruby/version.rb
         echo "Updated version to ${{ github.event.inputs.version }}"
-        cat lib/moex-ruby/version.rb
+        cat lib/moex_ruby/version.rb
 
     - name: Commit version update
       run: |
