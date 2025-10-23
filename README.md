@@ -8,6 +8,6 @@ Ruby gem для работы с MOEX ISS API - интерфейсом инфор
 
 ## Документация
 
-- [Руководство разработчика MOEX ISS API](https://ftp.moex.com/pub/ClientsAPI/ASTS/ASTS_Interfaces_Manual.pdf)
+- [Руководство разработчика MOEX ISS API](https://www.moex.com/a2193)
 - [Описание методов MOEX ISS API](https://iss.moex.com/iss/reference/)
 - [Описание метаданных MOEX ISS API](https://iss.moex.com/iss/engines/stock/markets/shares/securities)
