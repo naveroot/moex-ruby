@@ -1,4 +1,5 @@
 # moex-ruby
+[![Gem Version](https://badge.fury.io/rb/moex-ruby.svg)](https://badge.fury.io/rb/moex-ruby)
 
 Ruby gem для работы с MOEX ISS API - интерфейсом информационной системы Московской Биржи.
 

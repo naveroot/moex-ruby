@@ -14,9 +14,9 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/naveroot/moex-ruby'
   spec.license       = 'MIT'
 
-  spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/naveroot/moex-ruby'
   spec.metadata['changelog_uri'] = 'https://github.com/naveroot/moex-ruby/blob/main/CHANGELOG.md'
+  spec.metadata['bug_tracker_uri'] = 'https://github.com/naveroot/moex-ruby/issues'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   # Specify which files should be added to the gem when it is released.
