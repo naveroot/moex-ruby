@@ -70,11 +70,15 @@ module MoexRuby
     end
 
     def auto_paginate_get(path, params)
-      [].tap do |all_data|
+      lazy_enumerator = Enumerator.new do |yielder|
         paginate(path, params) do |page_data|
-          all_data.concat(PaginationHelper.normalize_data(page_data))
+          PaginationHelper.normalize_data(page_data).each do |item|
+            yielder << item
+          end
         end
       end
+      
+      LazyResult.new(lazy_enumerator)
     end
 
     def ensure_json_format(path)
