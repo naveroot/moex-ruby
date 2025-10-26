@@ -56,3 +56,7 @@ build-iPhoneSimulator/
 # .rubocop-https?--*
 /.idea/
 /.supercode/
+test_moex.rb
+TESTING.md
+/examples/
+/.cursor/
