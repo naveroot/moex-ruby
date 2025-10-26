@@ -34,17 +34,31 @@ module MoexRuby
       auto_paginate_get(path, params)
     end
 
-    def paginate(path, params = {})
-      return enum_for(:paginate, path, params) unless block_given?
+    def paginate(path, params = {}, max_pages = 1000)
+      return enum_for(:paginate, path, params, max_pages) unless block_given?
 
       start = 0
+      page = 0
+      
       loop do
+        page += 1
+        
+        if page > max_pages
+          MoexRuby.logger&.warn("Pagination reached max_pages limit (#{max_pages})")
+          break
+        end
+        
+        MoexRuby.logger&.debug("Fetching page #{page} with start=#{start}")
         data = perform_request(path, params.merge(start: start))
         size = PaginationHelper.extract_size(data)
-        break if size.zero?
+        
+        if size.zero?
+          MoexRuby.logger&.debug("Empty page received, pagination complete")
+          break
+        end
 
         yield data
-        start += size
+        start = start + size
       end
     end
 
@@ -56,11 +70,15 @@ module MoexRuby
     end
 
     def auto_paginate_get(path, params)
-      [].tap do |all_data|
+      lazy_enumerator = Enumerator.new do |yielder|
         paginate(path, params) do |page_data|
-          all_data.concat(PaginationHelper.normalize_data(page_data))
+          PaginationHelper.normalize_data(page_data).each do |item|
+            yielder << item
+          end
         end
       end
+      
+      LazyResult.new(lazy_enumerator)
     end
 
     def ensure_json_format(path)

@@ -9,9 +9,14 @@ require_relative 'moex_ruby/configuration'
 require_relative 'moex_ruby/faraday_connection'
 require_relative 'moex_ruby/connection_builder'
 require_relative 'moex_ruby/pagination_helper'
+require_relative 'moex_ruby/lazy_result'
 require_relative 'moex_ruby/client'
 
 module MoexRuby
+  class << self
+    attr_accessor :logger
+  end
+
   def self.version
     VERSION
   end

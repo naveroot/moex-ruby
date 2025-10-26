@@ -259,5 +259,84 @@ RSpec.describe MoexRuby::Client do
       expect(pages[0][:securities].size).to eq(2)
       expect(pages[1][:securities].size).to eq(1)
     end
+
+    context 'memory efficiency with large datasets' do
+      let(:auto_client) { described_class.new(auto_paginate: true) }
+
+      it 'does not load all data into memory at once' do
+        page_size = 50
+        total_pages = 10
+        start_value = 0
+
+        requests_made = []
+
+        total_pages.times do |page_num|
+          page_data = (1..page_size).map { |i| { id: page_num * page_size + i, value: "data#{i}" } }
+          response = { 'data' => { 'columns' => %w[id value], 'data' => page_data.map { |d| [d[:id], d[:value]] } } }
+
+          stub_request(:get, "https://iss.moex.com/iss/test.json?start=#{start_value}")
+            .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
+
+          start_value += page_size
+        end
+
+        result = auto_client.get('/iss/test')
+
+        expect(result).to be_a(MoexRuby::LazyResult)
+        expect(requests_made.size).to eq(0)
+
+        item_count = 0
+        result.each do |item|
+          item_count += 1
+          break if item_count >= 2
+        end
+
+        expect(item_count).to eq(2)
+        expect(result).to respond_to(:size)
+      end
+
+      it 'caches data only when to_a is called' do
+        page1 = { 'data' => { 'columns' => %w[ID], 'data' => [[1], [2], [3]] } }
+        page2 = { 'data' => { 'columns' => %w[ID], 'data' => [[4], [5], [6]] } }
+        page3 = { 'data' => { 'columns' => %w[ID], 'data' => [] } }
+
+        stub_request(:get, 'https://iss.moex.com/iss/test.json?start=0')
+          .to_return(status: 200, body: page1.to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, 'https://iss.moex.com/iss/test.json?start=3')
+          .to_return(status: 200, body: page2.to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, 'https://iss.moex.com/iss/test.json?start=6')
+          .to_return(status: 200, body: page3.to_json, headers: { 'Content-Type' => 'application/json' })
+
+        result = auto_client.get('/iss/test')
+
+        initial_cache_state = result.instance_variable_get(:@cached_array)
+        expect(initial_cache_state).to be_nil
+
+        cached = result.to_a
+        expect(cached).to be_an(Array)
+        expect(cached.size).to eq(6)
+
+        cached_state = result.instance_variable_get(:@cached_array)
+        expect(cached_state).to be_an(Array)
+        expect(cached_state.size).to eq(6)
+      end
+
+      it 'implements Array-like methods correctly' do
+        page1 = { 'data' => { 'columns' => %w[ID], 'data' => [[1], [2], [3]] } }
+        page2 = { 'data' => { 'columns' => %w[ID], 'data' => [] } }
+
+        stub_request(:get, 'https://iss.moex.com/iss/test.json?start=0')
+          .to_return(status: 200, body: page1.to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, 'https://iss.moex.com/iss/test.json?start=3')
+          .to_return(status: 200, body: page2.to_json, headers: { 'Content-Type' => 'application/json' })
+
+        result = auto_client.get('/iss/test')
+
+        expect(result.empty?).to be(false)
+        expect(result.length).to eq(3)
+        expect(result[0]).to eq(id: 1)
+        expect(result.is_a?(Array)).to be(true)
+      end
+    end
   end
 end
