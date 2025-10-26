@@ -12,6 +12,10 @@ require_relative 'moex_ruby/pagination_helper'
 require_relative 'moex_ruby/client'
 
 module MoexRuby
+  class << self
+    attr_accessor :logger
+  end
+
   def self.version
     VERSION
   end
