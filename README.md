@@ -89,12 +89,9 @@ client = MoexRuby::Client.new do |config|
   config.auto_paginate = true
 end
 ```
-
-Подробнее о конфигурации см. [CONFIGURATION.md](./CONFIGURATION.md)
-
 ## Модульная архитектура
 
-Гем использует модульную архитектуру по образцу Octokit, разделяя функциональность на логические группы:
+Гем использует модульную архитектуру, разделяя функциональность на логические группы:
 
 ### Securities - Работа с ценными бумагами
 
@@ -240,7 +237,3 @@ end
 - [Руководство разработчика MOEX ISS API](https://www.moex.com/a2193)
 - [Описание методов MOEX ISS API](https://iss.moex.com/iss/reference/)
 - [Описание метаданных MOEX ISS API](https://iss.moex.com/iss/engines/stock/markets/shares/securities)
-
-### Документация гема
-- [CONFIGURATION.md](./CONFIGURATION.md) - детальная конфигурация клиента
-- [TESTING.md](./TESTING.md) - руководство по тестированию
